@@ -31,12 +31,21 @@ int main( int argc , char *argv[]){
   }
   if( pid == 0 ){
     close(fd[0]);
-    dup2(fd[1],STDOUT_FILENO);
+    close(1);
+    if( (fcntl( fd[1], F_DUPFD, STDOUT_FILENO)) < 0 ){
+      perror("Error en primer fcntl");
+      exit(-1);
+    }
     execlp(argv[1],argv[1],NULL);
   }
   else{
     close(fd[1]);
-    dup2(fd[0],STDIN_FILENO);
+    close(0);
+    if( (fcntl( fd[0], F_DUPFD, STDIN_FILENO)) < 0 ){
+      perror("Error en segundo fnctl");
+      exit(-1);
+    }
     execlp(argv[3],argv[3],NULL);
   }
+  return 0;
 }
