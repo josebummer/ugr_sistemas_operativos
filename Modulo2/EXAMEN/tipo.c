@@ -50,6 +50,7 @@ int main( int argc , char *argv[]){//0
 				perror("Error en open");
 				exit(-1);
 			}//6
+			char p[NAME_MAX];
 			int tamanio = sprintf(p,"Usuario: %d",atributos.st_uid);
 			if( (write(fd,p,tamanio)) < 0){
 				perror("Error en write");
